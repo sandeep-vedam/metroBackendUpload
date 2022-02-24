@@ -1,0 +1,22 @@
+{
+  "name": "metrologicalupload",
+  "version": "1.0.0",
+  "description": "Uploads Lightning Apps to Metrological Backend",
+  "main": "src/upload.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "upload": "./bin/index.js"
+  },
+  "author": "Sandeep Vedam",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "chalk": "^4.1.0",
+    "didyoumean2": "^4.1.0",
+    "form-data": "^3.0.0",
+    "inquirer": "^7.3.3",
+    "ora": "^5.1.0"
+  }
+}
