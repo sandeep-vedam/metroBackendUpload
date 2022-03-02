@@ -1,13 +1,13 @@
 {
-  "name": "metrologicalupload",
-  "version": "1.0.0",
+  "name": "metrobackendupload",
+  "version": "1.2.0",
   "description": "Uploads Lightning Apps to Metrological Backend",
-  "main": "src/upload.js",
+  "main": "src/uploadScript.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "upload": "./bin/index.js"
+    "metroupload": "./bin/index.js"
   },
   "author": "Sandeep Vedam",
   "license": "ISC",

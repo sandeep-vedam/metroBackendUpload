@@ -20,47 +20,6 @@
  */
 
 // load and parse (optional) .env file with
-const program = require('commander')
-const didYouMean = require('didyoumean2').default
-const chalk = require('chalk')
+const upload = require('../src/uploadScript')
 
-const uploadAction = require('../src/upload')
-
-program
-    .version('AppUpload ' + require('../package').version) //We can change this later. Ignore for now
-    .usage('metroupload <command> [options]') //We can change this later. Ignore for now
-
-program
-    .command('upload')
-    .arguments('<path>') //Takes the path from command line as argument
-    .description(
-        [
-            '🚀',
-            ' '.repeat(3),
-            'Upload the Lightning App to the Metrological Back Office to be published in an App Store',
-        ].join('')
-    ).arguments('', '')
-    .action(path => uploadAction(path)) //Passing the path to upload script
-
-
-program.on('command:*', () => {
-    const suggestion = didYouMean(
-        program.args[0] || '',
-        program.commands.map(command => command._name)
-    )
-
-    console.log("Sorry, that command doesn't seems to exist ...")
-    console.log('')
-    if (suggestion) {
-        console.log('Perhaps you meant: ' + chalk.yellow('lng ' + suggestion) + '?')
-        console.log('')
-    }
-    console.log('Use ' + chalk.yellow('lng -h') + ' to see a full list of available commands')
-    process.exit(1)
-})
-
-program.parse(process.argv)
-
-if (!process.argv.slice(2).length) {
-    program.outputHelp()
-}
+upload()
