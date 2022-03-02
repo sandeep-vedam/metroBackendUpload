@@ -1,6 +1,6 @@
 {
   "name": "metrobackendupload",
-  "version": "1.2.0",
+  "version": "1.4.3",
   "description": "Uploads Lightning Apps to Metrological Backend",
   "main": "src/uploadScript.js",
   "scripts": {

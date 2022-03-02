@@ -4,15 +4,12 @@ const fs = require('fs')
 const spinner = require('ora')()
 const inquirer = require('inquirer')
 const path = require('path')
+const chalk = require('chalk')
 
-const metaDataPath = path.join(process.cwd(), 'metadata.json')
-const metaDataInfo = JSON.parse(fs.readFileSync(`${metaDataPath}`, 'utf-8'))
-const filename = [metaDataInfo.identifier, metaDataInfo.version, 'tgz'].join('.').replace(/\s/g, '_')
-const releaseFilePath = path.join(path.join(process.cwd(), 'releases'), filename)
-
-console.log('metaData Path', metaDataPath)
-console.log('metaData Info', metaDataInfo)
-console.log('Release file Path', releaseFilePath)
+let metaDataPath
+let metaDataInfo
+let releaseFilePath
+let releaseTarFileName
 
 // type = null, choices = null
 const ask = (question, defaultAnswer = null, type = null, choices = []) => {
@@ -58,6 +55,25 @@ const login = key => {
         .catch(err => {
             exit('Incorrect API key or not logged in to metrological dashboard')
         })
+}
+
+const checkFilesRequired = () => {
+    metaDataPath = path.join(process.cwd(), 'metadata.json')
+    console.log('metaData Path', metaDataPath)
+
+    if (!fs.existsSync(metaDataPath)) {
+        exit(chalk.red('Please make sure the command runs in the Application root folder or Metadata file does not exists in the App root folder'))
+    } else {
+        metaDataInfo = JSON.parse(fs.readFileSync(`${metaDataPath}`, 'utf-8'))
+        console.log('metaData Info', metaDataInfo)
+        releaseTarFileName = [metaDataInfo.identifier, metaDataInfo.version, 'tgz'].join('.').replace(/\s/g, '_')
+        releaseFilePath = path.join(path.join(process.cwd(), 'releases'), releaseTarFileName)
+        console.log('Release file Path', releaseFilePath)
+    }
+
+    if (!fs.existsSync(releaseFilePath)) {
+        exit(chalk.red('Application tar file is not available. Please make sure tar file is available in the releases folder of the app'))
+    }
 }
 
 const upload = (user) => {
@@ -106,6 +122,7 @@ const checkUploadFileSize = () => {
 module.exports = () => {
     let user
     return sequence([
+        () => checkFilesRequired(),
         // todo: save API key locally for future use and set it as default answer
         () => ask('Please provide your API key'),
         apiKey => login(apiKey).then(usr => ((user = usr), (usr.apiKey = apiKey))),
